@@ -1,0 +1,15 @@
+# Configuracion de IntelliJ IDEA
+.idea/
+*.iml
+
+# Salida de compilacion
+out/
+build/
+*.class
+
+# Sistema operativo
+Thumbs.db
+.DS_Store
+
+# Utilidades temporales
+*.log
