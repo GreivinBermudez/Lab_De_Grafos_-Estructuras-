@@ -2,8 +2,8 @@ package model;
 
 /**
  * Conversor entre la matriz de adyacencia ({@code int[][]}) y el modelo
- * {@link Grafo}. Toda la GUI pasa por aqui: ningun panel calcula la matriz por
- * su cuenta (seccion 3 del documento de modulos).
+ * {@link Grafo}. Toda la GUI pasa por aqui: ningun panel calcula ni valida
+ * la matriz por su cuenta.
  *
  * <p>Clase de utilidades: no se instancia.</p>
  */
@@ -96,7 +96,7 @@ public final class ConversorGrafo {
     }
 
     // ------------------------------------------------------------------
-    // Utilidades para la GUI (Modulos 2 y 3)
+    // Utilidades para la GUI
     // ------------------------------------------------------------------
 
     /** Matriz cuadrada de ceros de tamano n x n. */
@@ -120,9 +120,9 @@ public final class ConversorGrafo {
     }
 
     /**
-     * Cambia el tamano de la matriz conservando los datos existentes (caso de
-     * prueba 2 de la seccion 8). Si crece se rellena con ceros; si se reduce se
-     * recorta. La simetria se conserva en ambos casos.
+     * Cambia el tamano de la matriz conservando los datos existentes. Si crece
+     * se rellena con ceros; si se reduce se recorta. La simetria se conserva
+     * en ambos casos.
      */
     public static int[][] redimensionar(int[][] m, int nuevoTamano) {
         if (m == null) {
@@ -194,8 +194,8 @@ public final class ConversorGrafo {
 
     /**
      * Lee una matriz desde texto (celdas separadas por espacios, comas, punto y
-     * coma o tabuladores; una fila por linea). Se usa al pegar en la Opcion 1 la
-     * matriz copiada en la Opcion 2.
+     * coma o tabuladores; una fila por linea). Se usa al pegar matrices de
+     * texto en las dos opciones.
      *
      * @return matriz validada, o una matriz 0 x 0 si el texto esta vacio
      * @throws MatrizInvalidaException si el texto no es una matriz valida

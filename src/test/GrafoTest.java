@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Pruebas unitarias del modelo {@link Grafo} (Modulo 1).
+ * Pruebas unitarias del modelo {@link Grafo}.
  */
 class GrafoTest {
 
@@ -227,7 +227,7 @@ class GrafoTest {
     }
 
     @Test
-    @DisplayName("Agregar y quitar vertices conserva los datos previos (caso 2 de la seccion 8)")
+    @DisplayName("Agregar y quitar vertices conserva los datos previos")
     void agregarConservaDatos() {
         grafo.agregarVertice("A");
         grafo.agregarVertice("B");

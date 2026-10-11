@@ -11,20 +11,26 @@ import java.util.Objects;
  */
 public class Arista {
 
+    /** Vertice de origen (indice en el grafo). */
     private final int origen;
+    /** Vertice de destino (indice en el grafo). */
     private final int destino;
+    /** Peso de la arista (mayor que 0). */
     private final int peso;
 
+    /** Crea la arista origen -> destino con el peso indicado. */
     public Arista(int origen, int destino, int peso) {
         this.origen = origen;
         this.destino = destino;
         this.peso = peso;
     }
 
+    /** Indice del vertice de origen. */
     public int getOrigen() {
         return origen;
     }
 
+    /** Indice del vertice de destino. */
     public int getDestino() {
         return destino;
     }
