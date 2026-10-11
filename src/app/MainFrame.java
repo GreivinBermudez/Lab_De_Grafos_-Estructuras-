@@ -61,13 +61,15 @@ public class MainFrame extends JFrame {
     private JMenuBar crearBarraDeMenu() {
         JMenuBar barra = new JMenuBar();
 
+        // Menu Archivo: mnemonico Alt+A y atajo Ctrl+Q para salir.
         JMenu menuArchivo = new JMenu("Archivo");
         menuArchivo.setMnemonic(KeyEvent.VK_A);
         JMenuItem itemSalir = new JMenuItem("Salir");
         itemSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
-        itemSalir.addActionListener(e -> dispose());
+        itemSalir.addActionListener(e -> dispose()); // cierra solo esta ventana
         menuArchivo.add(itemSalir);
 
+        // Menu Ayuda: dos dialogos informativos con un separador entre ellos.
         JMenu menuAyuda = new JMenu("Ayuda");
         menuAyuda.setMnemonic(KeyEvent.VK_Y);
         JMenuItem itemComoUsar = new JMenuItem("Como usar la aplicacion");

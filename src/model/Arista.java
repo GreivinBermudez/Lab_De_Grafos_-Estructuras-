@@ -48,17 +48,20 @@ public class Arista {
     @Override
     public boolean equals(Object otro) {
         if (this == otro) {
-            return true;
+            return true; // misma referencia: son iguales
         }
         if (!(otro instanceof Arista)) {
-            return false;
+            return false; // no es siquiera una Arista
         }
+        // Dos aristas son iguales si coinciden origen, destino Y peso.
         Arista a = (Arista) otro;
         return origen == a.origen && destino == a.destino && peso == a.peso;
     }
 
     @Override
     public int hashCode() {
+        // Obligatorio junto a equals: si dos aristas son iguales deben devolver
+        // el mismo codigo; se calcula a partir de los mismos 3 campos.
         return Objects.hash(origen, destino, peso);
     }
 
