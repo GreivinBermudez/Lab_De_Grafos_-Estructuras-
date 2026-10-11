@@ -1,9 +1,9 @@
 package model;
 
 /**
- * Observador del grafo. La GUI implementa esta interfaz para repintar y volver
- * a generar la matriz cuando el modelo cambia (regla acordada: ningun panel
- * modifica la matriz directamente, siempre modifica el Grafo y escucha).
+ * Observador del grafo: la GUI lo implementa para repintarse y regenerar la
+ * matriz cuando el modelo cambia. Los paneles no modifican la matriz por su
+ * cuenta; modifican el {@link Grafo} y escuchan sus cambios.
  */
 public interface GrafoListener {
 

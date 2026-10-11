@@ -64,6 +64,7 @@ public class PanelOpcion1 extends JPanel {
     private final GrafoPanel panelGrafo;
     private final JLabel lblEstado;
 
+    /** Construye la Opcion 1: matriz 4x4 en ceros, no dirigida, y su grafo dibujado. */
     public PanelOpcion1() {
         super(new BorderLayout(0, 8));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -189,6 +190,7 @@ public class PanelOpcion1 extends JPanel {
     // Construccion de la GUI
     // ------------------------------------------------------------------
 
+    /** Fila de controles: tamano, tipo de grafo y botones de accion. */
     private JPanel crearControles() {
         JPanel controles = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         controles.add(new JLabel("Vertices:"));
@@ -202,12 +204,14 @@ public class PanelOpcion1 extends JPanel {
         return controles;
     }
 
+    /** Crea un boton con su accion asociada. */
     private JButton crearBoton(String texto, ActionListener accion) {
         JButton boton = new JButton(texto);
         boton.addActionListener(accion);
         return boton;
     }
 
+    /** Crea la tabla con el editor que solo admite digitos y celdas centradas. */
     private JTable crearTabla() {
         JTable tabla = new JTable(modeloMatriz);
         tabla.setRowHeight(26);
@@ -217,6 +221,7 @@ public class PanelOpcion1 extends JPanel {
         return tabla;
     }
 
+    /** Ajusta el ancho preferido de las columnas al tamano actual. */
     private void ajustarColumnas() {
         TableColumnModel columnas = tablaMatriz.getColumnModel();
         int n = modeloMatriz.getTamano();
@@ -225,6 +230,7 @@ public class PanelOpcion1 extends JPanel {
         }
     }
 
+    /** Refresca la barra de estado con el resumen del grafo generado. */
     private void actualizarEstado() {
         Grafo g = panelGrafo.getGrafo();
         lblEstado.setText(String.format("Grafo %s con %d vertices y %d aristas",
@@ -236,18 +242,22 @@ public class PanelOpcion1 extends JPanel {
     // Accesores utiles para las pruebas
     // ------------------------------------------------------------------
 
+    /** Modelo de la tabla de la matriz. */
     public MatrizTableModel getModeloMatriz() {
         return modeloMatriz;
     }
 
+    /** Lienzo donde se dibuja el grafo generado. */
     public GrafoPanel getPanelGrafo() {
         return panelGrafo;
     }
 
+    /** Selector del numero de vertices de la matriz. */
     public JSpinner getSpnTamano() {
         return spnTamano;
     }
 
+    /** Casilla que activa o desactiva el modo dirigido. */
     public JCheckBox getChkDirigido() {
         return chkDirigido;
     }

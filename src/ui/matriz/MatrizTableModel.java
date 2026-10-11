@@ -22,6 +22,7 @@ public class MatrizTableModel extends AbstractTableModel {
     /** true cuando el grafo es no dirigido: la matriz se mantiene simetrica. */
     private boolean simetrica;
 
+    /** Crea el modelo con una matriz de ceros del tamano indicado. */
     public MatrizTableModel(int tamanoInicial, boolean simetrica) {
         this.matriz = ConversorGrafo.matrizVacia(tamanoInicial);
         this.simetrica = simetrica;
@@ -32,10 +33,12 @@ public class MatrizTableModel extends AbstractTableModel {
         return ConversorGrafo.clonar(matriz);
     }
 
+    /** Tamano actual de la matriz (numero de vertices). */
     public int getTamano() {
         return matriz.length;
     }
 
+    /** Indica si el modelo mantiene la matriz simetrica (grafo no dirigido). */
     public boolean isSimetrica() {
         return simetrica;
     }
@@ -108,6 +111,11 @@ public class MatrizTableModel extends AbstractTableModel {
         return Integer.valueOf(matriz[fila][columna - 1]);
     }
 
+    /**
+     * Guarda el peso en la celda de la matriz. Los valores invalidos (texto no
+     * numerico o negativos) se ignoran y conservan el valor anterior; en modo
+     * simetrico se actualiza tambien la celda espejo.
+     */
     @Override
     public void setValueAt(Object valor, int fila, int columna) {
         if (columna == 0) {

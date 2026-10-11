@@ -63,6 +63,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
     private int indiceUltimoCreado = -1;
     private long tiempoUltimoCreado;
 
+    /** Crea el lienzo con un grafo vacio no dirigido y registra el mouse. */
     public GrafoEditorPanel() {
         super();
         getGrafo().addListener(this);
@@ -237,6 +238,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
     // Eventos del mouse
     // ------------------------------------------------------------------
 
+    /** Registra los manejadores de press/release/drag/move del mouse. */
     private void registrarEventos() {
         addMouseListener(new MouseAdapter() {
             @Override
@@ -272,6 +274,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
         });
     }
 
+    /** Press izquierdo: toma un vertice para arrastrar o marca punto de creacion. */
     private void procesarClicIzquierdo(Point punto) {
         int vertice = verticeEn(punto);
         if (vertice >= 0) {
@@ -282,6 +285,8 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
         }
     }
 
+    /** Suelta el boton: crea la arista si cayo sobre otro vertice, deja el
+     *  vertice movido si no, o crea el vertice pendiente del clic simple. */
     private void procesarSoltado(Point punto) {
         try {
             if (verticePresionado >= 0) {
@@ -301,6 +306,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
         }
     }
 
+    /** Arrastre: mueve el vertice presionado y resalta el destino posible. */
     private void procesarArrastre(Point punto) {
         if (verticePresionado >= 0) {
             setPosicion(verticePresionado, punto);
@@ -308,6 +314,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
         }
     }
 
+    /** Movimiento sin botones: resalta el vertice bajo el cursor y cambia el puntero. */
     private void procesarMovimiento(Point punto) {
         int vertice = verticeEn(punto);
         setVerticeResaltado(vertice);
@@ -316,12 +323,14 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
                 : Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
+    /** Clic derecho: elimina el vertice o la arista bajo el punto. */
     private void procesarClicDerecho(Point punto) {
         if (!eliminarVerticeEn(punto)) {
             eliminarAristaEn(punto);
         }
     }
 
+    /** Doble clic: renombra el vertice o edita el peso de la arista bajo el punto. */
     private void procesarDobleClic(Point punto) {
         int vertice = verticeEn(punto);
         if (vertice >= 0) {
@@ -342,6 +351,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
     // Cuadros de dialogo
     // ------------------------------------------------------------------
 
+    /** Dialogo para cambiar la etiqueta de un vertice (cancelar no cambia nada). */
     private void dialogoRenombrar(int indice) {
         String actual = getGrafo().getEtiqueta(indice);
         String entrada = JOptionPane.showInputDialog(this,
@@ -349,6 +359,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
         renombrarVertice(indice, entrada);
     }
 
+    /** Dialogo para cambiar el peso de una arista (entero >= 1). */
     private void dialogoPeso(int origen, int destino) {
         Grafo g = getGrafo();
         String titulo = g.getEtiqueta(origen) + (g.isDirigido() ? " -> " : " - ") + g.getEtiqueta(destino);

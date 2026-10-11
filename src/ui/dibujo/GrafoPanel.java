@@ -62,10 +62,12 @@ public class GrafoPanel extends JPanel {
     /** Vertice resaltado al dibujar (-1 = ninguno). Lo usa el editor. */
     protected int verticeResaltado;
 
+    /** Crea el lienzo con un grafo no dirigido vacio. */
     public GrafoPanel() {
         this(new Grafo(false));
     }
 
+    /** Crea el lienzo que dibuja el grafo indicado. */
     public GrafoPanel(Grafo grafo) {
         this.grafo = grafo;
         this.posiciones = new HashMap<>();
@@ -74,6 +76,7 @@ public class GrafoPanel extends JPanel {
         setPreferredSize(new Dimension(520, 400));
     }
 
+    /** Grafo que se esta dibujando. */
     public Grafo getGrafo() {
         return grafo;
     }
@@ -115,10 +118,12 @@ public class GrafoPanel extends JPanel {
         repaint();
     }
 
+    /** Vertice resaltado actualmente (-1 = ninguno). */
     public int getVerticeResaltado() {
         return verticeResaltado;
     }
 
+    /** Resalta un vertice al dibujar (-1 quita el resaltado). */
     public void setVerticeResaltado(int indice) {
         this.verticeResaltado = indice;
         repaint();
@@ -209,6 +214,7 @@ public class GrafoPanel extends JPanel {
         }
     }
 
+    /** Dibuja una arista: linea, curva (si hay ida y vuelta) o bucle, con flecha y peso. */
     private void pintarArista(Graphics2D g2, Arista arista) {
         Point o = posiciones.get(arista.getOrigen());
         Point d = posiciones.get(arista.getDestino());
@@ -272,6 +278,7 @@ public class GrafoPanel extends JPanel {
     }
 
     /** Punta de flecha rellena en (x, y) mirando hacia la direccion dada. */
+    /** Punta de flecha rellena en (x, y) mirando hacia la direccion dada. */
     private void pintarFlecha(Graphics2D g2, double puntaX, double puntaY, double dirX, double dirY) {
         double angulo = Math.atan2(dirY, dirX);
         double largo = 11;
@@ -298,6 +305,7 @@ public class GrafoPanel extends JPanel {
         g2.drawString(texto, (int) x - fm.stringWidth(texto) / 2, (int) (y + fm.getAscent() / 2 - 1));
     }
 
+    /** Dibuja el circulo del vertice con su etiqueta centrada. */
     private void pintarVertice(Graphics2D g2, int indice) {
         Point p = posiciones.get(indice);
         if (p == null) {

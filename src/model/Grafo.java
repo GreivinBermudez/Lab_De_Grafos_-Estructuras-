@@ -7,22 +7,19 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- * Modelo del grafo (nucleo del Modulo 1). Guarda la matriz de adyacencia
- * interna {@code int[][]} y las etiquetas de los vertices.
+ * Modelo de un grafo: guarda la matriz de adyacencia interna ({@code int[][]})
+ * y las etiquetas de los vertices en el mismo orden que filas y columnas.
  *
- * <p>Reglas acordadas con los Modulos 2 y 3:</p>
+ * <p>Reglas del modelo:</p>
  * <ul>
  *   <li>Un {@code 0} en {@code [i][j]} significa que no hay arista; un valor
- *       mayor que 0 es arista y, si se usa la vista ponderada, su peso.</li>
- *   <li>Grafo no dirigido: la matriz es simetrica, {@code setPeso(i, j, p)}
+ *       mayor que 0 es arista y, si el grafo es ponderado, su peso.</li>
+ *   <li>Grafo no dirigido: la matriz es simetrica; {@code setPeso(i, j, p)}
  *       actualiza tambien {@code [j][i]}.</li>
  *   <li>Grafo dirigido: cada celda es independiente.</li>
  *   <li>Los bucles (diagonal principal) estan permitidos.</li>
  *   <li>Toda modificacion notifica a los {@link GrafoListener} registrados.</li>
  * </ul>
- *
- * <p>Este es el contrato de la seccion 4 del documento de division de modulos:
- * los metodos publicos no deben cambiar de firma sin avisar a todo el equipo.</p>
  */
 public class Grafo {
 
@@ -46,6 +43,7 @@ public class Grafo {
     // Configuracion
     // ------------------------------------------------------------------
 
+    /** Indica si las aristas del grafo son dirigidas. */
     public boolean isDirigido() {
         return dirigido;
     }
@@ -66,6 +64,7 @@ public class Grafo {
         notificar();
     }
 
+    /** Deja la matriz simetrica tomando el maximo de cada pareja de celdas. */
     private void simetrizar() {
         int n = getNumVertices();
         for (int i = 0; i < n; i++) {
@@ -81,6 +80,7 @@ public class Grafo {
     // Vertices
     // ------------------------------------------------------------------
 
+    /** Numero de vertices actuales (dimension de la matriz). */
     public int getNumVertices() {
         return etiquetas.size();
     }
@@ -190,20 +190,24 @@ public class Grafo {
         setPeso(origen, destino, 1);
     }
 
+    /** Elimina la arista origen -> destino (y su simetrica en no dirigidos). */
     public void eliminarArista(int origen, int destino) {
         setPeso(origen, destino, 0);
     }
 
+    /** Peso de la arista origen -> destino (0 = sin arista). */
     public int getPeso(int origen, int destino) {
         verificarIndice(origen);
         verificarIndice(destino);
         return matriz[origen][destino];
     }
 
+    /** Indica si existe la arista origen -> destino. */
     public boolean hayArista(int origen, int destino) {
         return getPeso(origen, destino) > 0;
     }
 
+    /** Indica si el vertice tiene un bucle (arista consigo mismo). */
     public boolean esBucle(int indice) {
         return getPeso(indice, indice) > 0;
     }
@@ -294,6 +298,7 @@ public class Grafo {
         notificar();
     }
 
+    /** Indica si el grafo no tiene vertices. */
     public boolean estaVacio() {
         return getNumVertices() == 0;
     }
@@ -326,6 +331,8 @@ public class Grafo {
         return alcanza(0, false) == n && alcanza(0, true) == n;
     }
 
+    /** Vertices alcanzados desde inicio (o que alcanzan a inicio, si se recorre
+     *  en sentido inverso) con una busqueda en profundidad iterativa. */
     private int alcanza(int inicio, boolean recorrerInverso) {
         int n = getNumVertices();
         boolean[] visto = new boolean[n];
@@ -351,12 +358,14 @@ public class Grafo {
     // Escucha de cambios (GrafoListener)
     // ------------------------------------------------------------------
 
+    /** Registra un observador de los cambios del grafo (no admite duplicados). */
     public void addListener(GrafoListener l) {
         if (l != null && !listeners.contains(l)) {
             listeners.add(l);
         }
     }
 
+    /** Da de baja un observador registrado. */
     public void removeListener(GrafoListener l) {
         listeners.remove(l);
     }
@@ -369,6 +378,7 @@ public class Grafo {
         }
     }
 
+    /** Lanza IllegalArgumentException si el indice no corresponde a un vertice. */
     private void verificarIndice(int indice) {
         if (indice < 0 || indice >= getNumVertices()) {
             throw new IllegalArgumentException(

@@ -52,6 +52,7 @@ public class PanelOpcion2 extends JPanel {
     /** Escucha el grafo actual para regenerar la matriz en vivo. */
     private final GrafoListener oyenteMatriz = this::refrescarMatriz;
 
+    /** Construye la Opcion 2: lienzo vacio y la matriz generada al lado. */
     public PanelOpcion2() {
         super(new BorderLayout(0, 8));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -97,6 +98,7 @@ public class PanelOpcion2 extends JPanel {
     // Acciones
     // ------------------------------------------------------------------
 
+    /** Aplica el tipo de grafo (dirigido/no dirigido) seleccionado en la casilla. */
     private void aplicarTipoGrafo() {
         panelEditor.getGrafo().setDirigido(chkDirigido.isSelected());
     }
@@ -162,12 +164,14 @@ public class PanelOpcion2 extends JPanel {
     // Actualizacion de la matriz y del estado
     // ------------------------------------------------------------------
 
+    /** Regenera la matriz y el estado a partir del grafo actual. */
     private void refrescarMatriz() {
         modeloMatriz.cargar(ConversorGrafo.aMatriz(panelEditor.getGrafo()));
         ajustarColumnas();
         actualizarEstado();
     }
 
+    /** Ajusta el ancho preferido de las columnas al tamano actual. */
     private void ajustarColumnas() {
         TableColumnModel columnas = tablaMatriz.getColumnModel();
         int n = modeloMatriz.getTamano();
@@ -176,6 +180,7 @@ public class PanelOpcion2 extends JPanel {
         }
     }
 
+    /** Refresca la barra de estado con el resumen del grafo dibujado. */
     private void actualizarEstado() {
         Grafo g = panelEditor.getGrafo();
         lblEstado.setText(String.format("Grafo %s con %d vertices y %d aristas",
@@ -187,6 +192,7 @@ public class PanelOpcion2 extends JPanel {
     // Construccion de la GUI
     // ------------------------------------------------------------------
 
+    /** Fila de controles: tipo de grafo y botones de accion. */
     private JPanel crearControles() {
         JPanel controles = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         controles.add(chkDirigido);
@@ -196,6 +202,7 @@ public class PanelOpcion2 extends JPanel {
         return controles;
     }
 
+    /** Crea un boton con su accion asociada. */
     private JButton crearBoton(String texto, ActionListener accion) {
         JButton boton = new JButton(texto);
         boton.addActionListener(accion);
@@ -206,14 +213,17 @@ public class PanelOpcion2 extends JPanel {
     // Accesores utiles para las pruebas
     // ------------------------------------------------------------------
 
+    /** Lienzo donde se dibuja el grafo con el mouse. */
     public GrafoEditorPanel getPanelEditor() {
         return panelEditor;
     }
 
+    /** Modelo de solo lectura con la matriz generada. */
     public MatrizTableModel getModeloMatriz() {
         return modeloMatriz;
     }
 
+    /** Casilla que activa o desactiva el modo dirigido. */
     public JCheckBox getChkDirigido() {
         return chkDirigido;
     }

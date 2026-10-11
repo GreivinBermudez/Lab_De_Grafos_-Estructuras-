@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Pruebas unitarias del {@link ConversorGrafo} (Modulo 1): validaciones,
+ * Pruebas unitarias del {@link ConversorGrafo}: validaciones,
  * conversiones matriz/grafo y casos extremos.
  */
 class ConversorGrafoTest {
@@ -160,7 +160,7 @@ class ConversorGrafoTest {
     }
 
     @Test
-    @DisplayName("redimensionar conserva los datos al crecer y al reducir (caso 2 y 7)")
+    @DisplayName("redimensionar conserva los datos al crecer y al reducir")
     void redimensionarConservaDatos() {
         int[][] m = {
                 {0, 1, 0},
