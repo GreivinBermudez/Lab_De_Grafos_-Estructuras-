@@ -4,10 +4,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
- * Punto de entrada de la aplicacion (Modulo 1).
- *
- * <p>Abre la ventana principal con las dos opciones del proyecto:
- * Opcion 1 (matriz a grafo, Modulo 2) y Opcion 2 (dibujar grafo, Modulo 3).</p>
+ * Punto de entrada de la aplicacion: abre la ventana principal con las dos
+ * opciones del proyecto (matriz de adyacencia a grafo y dibujar grafo).
  */
 public final class Main {
 
