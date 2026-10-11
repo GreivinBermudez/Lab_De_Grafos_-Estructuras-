@@ -19,6 +19,9 @@ public final class Main {
         } catch (Exception e) {
             System.err.println("No se pudo aplicar el look and feel del sistema: " + e.getMessage());
         }
+        // Toda creacion y uso de componentes Swing DEBE hacerse en el hilo
+        // grafico (Event Dispatch Thread). invokeLater encola la tarea en ese
+        // hilo y devuelve el control de inmediato.
         SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
     }
 }

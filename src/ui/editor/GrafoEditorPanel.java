@@ -36,7 +36,11 @@ import java.awt.event.MouseMotionAdapter;
  * la arista elige la direccion segun el lado de la curva en que este el
  * mouse, igual que las dibuja {@code GrafoPanel}.</p>
  */
+<<<<<<< HEAD
 public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
+=======
+public class  GrafoEditorPanel extends GrafoPanel implements GrafoListener {
+>>>>>>> Mariano
 
     private static final long serialVersionUID = 1L;
 
@@ -94,8 +98,15 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
 
     /** Crea un vertice en el punto indicado y devuelve su indice. */
     public int crearVerticeEn(Point punto) {
+<<<<<<< HEAD
         int indice = getGrafo().agregarVertice(null);
         setPosicion(indice, new Point(punto));
+=======
+        int indice = getGrafo().agregarVertice(null); // etiqueta automatica (A, B, C...)
+        setPosicion(indice, new Point(punto)); // se coloca donde el usuario hizo clic
+        // Se recuerda el vertice recien creado y su hora, para no confundir ese
+        // mismo clic con un doble clic (ver procesarDobleClic).
+>>>>>>> Mariano
         indiceUltimoCreado = indice;
         tiempoUltimoCreado = System.currentTimeMillis();
         return indice;
@@ -207,17 +218,32 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
             }
             double distancia;
             if (arista.esBucle()) {
+<<<<<<< HEAD
+=======
+                // El bucle es un circulo pequeno sobre el vertice; se usa su centro.
+>>>>>>> Mariano
                 double centroY = o.y - RADIO_VERTICE - RADIO_BUCLE + 5;
                 distancia = Math.hypot(punto.x - o.x, punto.y - centroY);
             } else {
                 distancia = distanciaASegmento(punto, o, d);
             }
             if (distancia > UMBRAL_ARISTA) {
+<<<<<<< HEAD
                 continue;
             }
             if (mejor != null && !arista.esBucle()
                     && mejor[0] == arista.getDestino() && mejor[1] == arista.getOrigen()) {
                 // Es la inversa de la candidata actual: se decide por el lado de la curva.
+=======
+                continue; // el mouse no esta lo suficientemente cerca de esta arista
+            }
+            if (mejor != null && !arista.esBucle()
+                    && mejor[0] == arista.getDestino() && mejor[1] == arista.getOrigen()) {
+                // Es la inversa de la candidata actual (A->B vs B->A, que se
+                // dibujan como dos curvas separadas). Se decide por el lado de la
+                // curva en que este el punto, usando el signo del producto vectorial
+                // (cruz) entre el vector de la arista candidata y el vector al mouse.
+>>>>>>> Mariano
                 Point mo = getPosicion(mejor[0]);
                 Point md = getPosicion(mejor[1]);
                 double cruz = (md.x - mo.x) * (punto.y - mo.y) - (md.y - mo.y) * (punto.x - mo.x);
@@ -278,9 +304,20 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
     private void procesarClicIzquierdo(Point punto) {
         int vertice = verticeEn(punto);
         if (vertice >= 0) {
+<<<<<<< HEAD
             verticePresionado = vertice;
             posicionInicial = new Point(getPosicion(vertice));
         } else if (aristaEn(punto) == null) {
+=======
+            // Se pulsó sobre un vértice: se guarda cuál es y su posición
+            // original (por si era un gesto de arista y hay que devolverlo).
+            verticePresionado = vertice;
+            posicionInicial = new Point(getPosicion(vertice));
+        } else if (aristaEn(punto) == null) {
+            // Se pulsó en zona vacía (no sobre una arista): se recuerda el
+            // punto para crear un vértice SOLO si al soltar no se arrastró
+            // (eso distingue un clic simple de un arrastre).
+>>>>>>> Mariano
             pendienteCrear = new Point(punto);
         }
     }
@@ -290,6 +327,7 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
     private void procesarSoltado(Point punto) {
         try {
             if (verticePresionado >= 0) {
+<<<<<<< HEAD
                 int destino = verticeEn(punto, verticePresionado);
                 if (destino >= 0) {
                     crearArista(verticePresionado, destino);
@@ -300,6 +338,26 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
                 crearVerticeEn(pendienteCrear);
             }
         } finally {
+=======
+                // Se soltó sobre OTRO vértice: era un gesto de arista, no de mover.
+                int destino = verticeEn(punto, verticePresionado);
+                if (destino >= 0) {
+                    crearArista(verticePresionado, destino);
+                    // Se devuelve el vértice a su sitio original: no se movió,
+                    // solo se usó para trazar la arista.
+                    setPosicion(verticePresionado, posicionInicial); // era un gesto de arista
+                }
+                // Si no cayó sobre ningún vértice, el vértice queda en la
+                // posición nueva (se movió con el arrastre).
+                setVerticeResaltado(-1);
+            } else if (pendienteCrear != null && pendienteCrear.distance(punto) <= UMBRAL_CLIC) {
+                // No se arrastró (el mouse se movió menos del umbral): se
+                // interpreta como clic simple y se crea el vértice pendiente.
+                crearVerticeEn(pendienteCrear);
+            }
+        } finally {
+            // En cualquier caso se limpia el estado del gesto en curso.
+>>>>>>> Mariano
             verticePresionado = -1;
             posicionInicial = null;
             pendienteCrear = null;
@@ -334,6 +392,12 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
     private void procesarDobleClic(Point punto) {
         int vertice = verticeEn(punto);
         if (vertice >= 0) {
+<<<<<<< HEAD
+=======
+            // Si el vértice se acaba de crear con este mismo clic, no se abre
+            // el diálogo (se interpreta como parte de la creación, no como un
+            // doble clic intencional).
+>>>>>>> Mariano
             boolean recienCreado = vertice == indiceUltimoCreado
                     && System.currentTimeMillis() - tiempoUltimoCreado < VENTANA_DOBLE_CLIC_MS;
             if (!recienCreado) {
@@ -341,6 +405,10 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
             }
             return;
         }
+<<<<<<< HEAD
+=======
+        // Si no hay vértice, se comprueba si el doble clic cayó sobre una arista.
+>>>>>>> Mariano
         int[] arista = aristaEn(punto);
         if (arista != null) {
             dialogoPeso(arista[0], arista[1]);
@@ -431,8 +499,17 @@ public class GrafoEditorPanel extends GrafoPanel implements GrafoListener {
         double dy = b.y - a.y;
         double longitud2 = dx * dx + dy * dy;
         if (longitud2 < 1e-9) {
+<<<<<<< HEAD
             return p.distance(a);
         }
+=======
+            return p.distance(a); // a y b casi coinciden: se mide al punto a
+        }
+        // Proyección del punto p sobre la recta a-b. El parámetro "t" indica
+        // dónde cae la proyección: 0 = en a, 1 = en b. Se recorta al intervalo
+        // [0,1] para que, si cae fuera del segmento, se use el extremo más
+        // cercano y así se obtenga la distancia real al segmento (no a la recta).
+>>>>>>> Mariano
         double t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / longitud2;
         t = Math.max(0.0, Math.min(1.0, t));
         return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));

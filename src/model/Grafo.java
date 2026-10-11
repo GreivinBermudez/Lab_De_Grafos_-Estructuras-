@@ -10,6 +10,16 @@ import java.util.List;
  * Modelo de un grafo: guarda la matriz de adyacencia interna ({@code int[][]})
  * y las etiquetas de los vertices en el mismo orden que filas y columnas.
  *
+<<<<<<< HEAD
+=======
+ * <p><b>Role en la arquitectura (patron Modelo-Vista):</b> esta clase es el
+ * "cerebro" de la aplicacion y NO conoce la interfaz. Toda modificacion
+ * notifica a los {@link GrafoListener} registrados y es la GUI quien se
+ * repinta al escuchar esos cambios; por eso ningun panel edita la matriz
+ * directamente, siempre se pasa por aqui. Es el contrato congelado que
+ * comparten los 3 modulos del proyecto.</p>
+ *
+>>>>>>> Mariano
  * <p>Reglas del modelo:</p>
  * <ul>
  *   <li>Un {@code 0} en {@code [i][j]} significa que no hay arista; un valor
@@ -94,6 +104,11 @@ public class Grafo {
      */
     public int agregarVertice(String etiqueta) {
         int n = getNumVertices();
+        // Como la matriz es cuadrada, para sumar 1 vertice hay que crear una
+        // matriz (n+1)x(n+1) y copiar los datos viejos fila por fila
+        // (System.arraycopy es la copia rapida). La nueva fila y la nueva
+        // columna quedan en ceros, y 0 significa "sin arista" para el vertice
+        // recien agregado; por eso conserva los datos existentes.
         int[][] nueva = new int[n + 1][n + 1];
         for (int i = 0; i < n; i++) {
             System.arraycopy(matriz[i], 0, nueva[i], 0, n);
@@ -115,15 +130,20 @@ public class Grafo {
         verificarIndice(indice);
         int n = getNumVertices();
         int[][] nueva = new int[n - 1][n - 1];
+        // Se copia la matriz "saltando" la fila y la columna del vertice
+        // eliminado. Los dos contadores (filaNueva/colNueva) van escribiendo
+        // compactando: los vertices con indice mayor quedan recorridos una
+        // posicion hacia abajo (por eso GrafoPanel debe corregir sus
+        // posiciones al borrar un vertice).
         int filaNueva = 0;
         for (int i = 0; i < n; i++) {
             if (i == indice) {
-                continue;
+                continue; // se omite la fila del vertice eliminado
             }
             int colNueva = 0;
             for (int j = 0; j < n; j++) {
                 if (j == indice) {
-                    continue;
+                    continue; // se omite la columna del vertice eliminado
                 }
                 nueva[filaNueva][colNueva++] = matriz[i][j];
             }
@@ -179,6 +199,9 @@ public class Grafo {
         verificarIndice(origen);
         verificarIndice(destino);
         matriz[origen][destino] = peso;
+        // En un grafo NO dirigido la arista es la misma en los dos sentidos,
+        // por lo que ademas de [origen][destino] se escribe su celda espejo
+        // [destino][origen] para que la matriz nunca deje de ser simetrica.
         if (!dirigido) {
             matriz[destino][origen] = peso;
         }
@@ -223,9 +246,12 @@ public class Grafo {
         verificarIndice(indice);
         int n = getNumVertices();
         int grado = 0;
+        // Se recorre la fila (aristas que salen) y, si es dirigido, tambien la
+        // columna (aristas que entran). En no dirigidos [i][j] y [j][i] son la
+        // misma arista, por eso solo se cuenta una vez la fila.
         for (int j = 0; j < n; j++) {
             if (j == indice) {
-                continue;
+                continue; // el bucle se trata aparte, al final
             }
             if (matriz[indice][j] > 0) {
                 grado++;
@@ -323,8 +349,11 @@ public class Grafo {
     public boolean esConexo() {
         int n = getNumVertices();
         if (n <= 1) {
-            return true;
+            return true; // un grafo sin vertices o con 1 solo siempre es conexo
         }
+        // No dirigido: basta con alcanzar a todos desde un solo vertice.
+        // Dirigido: se exige conectividad FUERTE, o sea que todos se alcancen
+        // tanto en sentido directo como inverso (ida y vuelta).
         if (!dirigido) {
             return alcanza(0, false) == n;
         }
@@ -335,16 +364,18 @@ public class Grafo {
      *  en sentido inverso) con una busqueda en profundidad iterativa. */
     private int alcanza(int inicio, boolean recorrerInverso) {
         int n = getNumVertices();
-        boolean[] visto = new boolean[n];
+        boolean[] visto = new boolean[n]; // evita visitar un vertice dos veces
         Deque<Integer> pila = new ArrayDeque<>();
-        pila.push(inicio);
+        pila.push(inicio); // DFS iterativo con pila (evita recursion profunda)
         visto[inicio] = true;
-        int contador = 1;
+        int contador = 1; // el propio inicio ya esta alcanzado
         while (!pila.isEmpty()) {
             int v = pila.pop();
             for (int w = 0; w < n; w++) {
+                // En modo inverso se leen las aristas al reves: matriz[w][v]
+                // en lugar de matriz[v][w], para recorrer hacia "atras".
                 int peso = recorrerInverso ? matriz[w][v] : matriz[v][w];
-                if (peso > 0 && !visto[w]) {
+                if (peso > 0 && !visto[w]) { // peso > 0 significa que hay arista
                     visto[w] = true;
                     contador++;
                     pila.push(w);
@@ -373,6 +404,8 @@ public class Grafo {
     /** Notifica a los observadores. */
     protected void notificar() {
         // copia defensiva: un listener puede quitarse a si mismo al reaccionar
+        // (por eso se recorre una copia de la lista y no la original, que
+        // provocaria ConcurrentModificationException).
         for (GrafoListener l : new ArrayList<>(listeners)) {
             l.grafoCambio();
         }
