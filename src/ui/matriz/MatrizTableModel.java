@@ -119,25 +119,16 @@ public class MatrizTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object valor, int fila, int columna) {
         if (columna == 0) {
-<<<<<<< HEAD
-            return;
-=======
             return; // la columna de etiquetas no se edita
->>>>>>> Mariano
         }
         int peso = parsear(valor);
         if (peso < 0) {
             return; // valor invalido: se conserva el anterior
         }
-<<<<<<< HEAD
-        int j = columna - 1;
-        matriz[fila][j] = peso;
-=======
         int j = columna - 1; // la columna 0 es la etiqueta, la matriz arranca en la 1
         matriz[fila][j] = peso;
         // En modo simetrico (no dirigido) se actualiza tambien la celda espejo
         // [j][fila] y se avisa a la tabla para repintar ambas celdas.
->>>>>>> Mariano
         if (simetrica && fila != j) {
             matriz[j][fila] = peso;
             fireTableCellUpdated(j, fila + 1);
@@ -153,19 +144,11 @@ public class MatrizTableModel extends AbstractTableModel {
             }
             String texto = String.valueOf(valor).trim();
             if (texto.isEmpty()) {
-<<<<<<< HEAD
-                return 0;
-            }
-            return Integer.parseInt(texto);
-        } catch (NumberFormatException e) {
-            return -1;
-=======
                 return 0; // celda vacia se interpreta como "sin arista"
             }
             return Integer.parseInt(texto);
         } catch (NumberFormatException e) {
             return -1; // -1 es la marca de "no numerico", que setValueAt ignora
->>>>>>> Mariano
         }
     }
 }

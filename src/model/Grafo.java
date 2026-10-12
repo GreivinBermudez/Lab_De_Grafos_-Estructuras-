@@ -10,8 +10,6 @@ import java.util.List;
  * Modelo de un grafo: guarda la matriz de adyacencia interna ({@code int[][]})
  * y las etiquetas de los vertices en el mismo orden que filas y columnas.
  *
-<<<<<<< HEAD
-=======
  * <p><b>Role en la arquitectura (patron Modelo-Vista):</b> esta clase es el
  * "cerebro" de la aplicacion y NO conoce la interfaz. Toda modificacion
  * notifica a los {@link GrafoListener} registrados y es la GUI quien se
@@ -19,7 +17,6 @@ import java.util.List;
  * directamente, siempre se pasa por aqui. Es el contrato congelado que
  * comparten los 3 modulos del proyecto.</p>
  *
->>>>>>> Mariano
  * <p>Reglas del modelo:</p>
  * <ul>
  *   <li>Un {@code 0} en {@code [i][j]} significa que no hay arista; un valor

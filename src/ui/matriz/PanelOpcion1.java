@@ -119,20 +119,14 @@ public class PanelOpcion1 extends JPanel {
     /** Convierte la matriz actual en grafo y lo dibuja. */
     public boolean generarGrafo() {
         try {
-<<<<<<< HEAD
-=======
             // Pasa la matriz de la tabla por el conversor (que la valida) y
             // entrega el resultado al lienzo para que lo dibuje.
->>>>>>> Mariano
             Grafo nuevo = ConversorGrafo.desdeMatriz(modeloMatriz.getMatriz(), chkDirigido.isSelected());
             panelGrafo.setGrafo(nuevo);
             actualizarEstado();
             return true;
         } catch (MatrizInvalidaException ex) {
-<<<<<<< HEAD
-=======
             // La validación falló: se muestra el motivo al usuario en un diálogo.
->>>>>>> Mariano
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Matriz invalida",
                     JOptionPane.ERROR_MESSAGE);
             return false;
@@ -353,22 +347,16 @@ public class PanelOpcion1 extends JPanel {
         }
 
         private void reemplazar(FilterBypass fb, int desplazamiento, int longitud, String texto) {
-<<<<<<< HEAD
-=======
             // Se quitan todos los caracteres que no sean digitos (0-9) del texto
             // que se intenta escribir, para que solo entren numeros.
->>>>>>> Mariano
             String digitos = texto.replaceAll("[^0-9]", "");
             try {
                 Document doc = fb.getDocument();
                 String actual = doc.getText(0, doc.getLength());
                 StringBuilder resultado = new StringBuilder(actual);
                 resultado.replace(desplazamiento, desplazamiento + longitud, digitos);
-<<<<<<< HEAD
-=======
                 // Solo se aplica si el resultado sigue dentro del limite de
                 // caracteres; si no, se descarta el cambio (no se escribe nada).
->>>>>>> Mariano
                 if (resultado.length() <= LONGITUD_MAXIMA) {
                     fb.replace(desplazamiento, longitud, digitos, null);
                 }

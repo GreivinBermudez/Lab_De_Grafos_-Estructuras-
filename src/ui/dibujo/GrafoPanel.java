@@ -105,16 +105,9 @@ public class GrafoPanel extends JPanel {
     /**
      * Quita la posicion del vertice eliminado y recorre las posiciones de los
      * vertices con indice mayor (iguales a como reajusta la matriz el Grafo).
-     */
-<<<<<<< HEAD
-=======
-    /**
-     * Quita la posicion del vertice eliminado y recorre las posiciones de los
-     * vertices con indice mayor (iguales a como reajusta la matriz el Grafo).
      * Al borrar el vertice i, todos los que estaban despues bajan una posicion,
      * asi que sus claves en el mapa deben restarse 1 para no "desincronizarse".
      */
->>>>>>> Mariano
     public void eliminarPosicion(int indice) {
         posiciones.remove(indice);
         Map<Integer, Point> nuevas = new HashMap<>();
@@ -143,17 +136,11 @@ public class GrafoPanel extends JPanel {
         if (grafo == null || punto == null) {
             return -1;
         }
-<<<<<<< HEAD
-        asegurarPosiciones();
-        int mejor = -1;
-        double mejorDistancia = RADIO_VERTICE + 4;
-=======
         asegurarPosiciones(); // garantiza que todos los vertices tengan coordenadas
         int mejor = -1;
         double mejorDistancia = RADIO_VERTICE + 4; // margen un poco mayor al radio
         // Se busca el vertice MAS CERCANO al punto dentro del umbral, para que
         // si dos circulos se solapan gane el de en medio.
->>>>>>> Mariano
         for (int i = 0; i < grafo.getNumVertices(); i++) {
             Point p = posiciones.get(i);
             if (p == null) {
@@ -204,10 +191,7 @@ public class GrafoPanel extends JPanel {
     /** Coloca en circulo los vertices que aun no tienen posicion. */
     protected void asegurarPosiciones() {
         int n = grafo.getNumVertices();
-<<<<<<< HEAD
-=======
         // Se listan solo los vertices "huecos" (sin coordenadas asignadas a mano).
->>>>>>> Mariano
         List<Integer> sinPosicion = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             if (!posiciones.containsKey(i)) {
@@ -215,31 +199,20 @@ public class GrafoPanel extends JPanel {
             }
         }
         if (sinPosicion.isEmpty()) {
-<<<<<<< HEAD
-            return;
-=======
             return; // todos ya tienen posicion, no hay que hacer nada
->>>>>>> Mariano
         }
         if (n == 1) {
             posiciones.put(sinPosicion.get(0), new Point(getWidth() / 2, getHeight() / 2));
             return;
         }
-<<<<<<< HEAD
-=======
         // Layout circular: se distribuyen los vertices faltantes en la circunferencia
         // de un circulo centrado en el panel. El angulo arranca en -PI/2 (arriba) y
         // se reparte uniformemente (2*PI/k) entre los que faltan.
->>>>>>> Mariano
         double cx = getWidth() / 2.0;
         double cy = getHeight() / 2.0;
         double radio = Math.min(getWidth(), getHeight()) / 2.0 - MARGEN - RADIO_VERTICE;
         if (radio < RADIO_MINIMO) {
-<<<<<<< HEAD
-            radio = RADIO_MINIMO;
-=======
             radio = RADIO_MINIMO; // radio minimo para paneles muy pequenos
->>>>>>> Mariano
         }
         int m = sinPosicion.size();
         for (int k = 0; k < m; k++) {
@@ -266,16 +239,11 @@ public class GrafoPanel extends JPanel {
         double dy = d.y - o.y;
         double distancia = Math.hypot(dx, dy);
         if (distancia < 1) {
-<<<<<<< HEAD
-            return;
-        }
-=======
             return; // los dos centros casi coinciden: no hay nada que trazar
         }
         // Vector unitario (ux, uy) de origen a destino, para recortar la linea
         // por ambos extremos y que empiece/termine en el borde del circulo y no
         // en el centro (evita que la linea atraviese los vertices).
->>>>>>> Mariano
         double ux = dx / distancia;
         double uy = dy / distancia;
         double recorte = RADIO_VERTICE + 2;
@@ -283,11 +251,6 @@ public class GrafoPanel extends JPanel {
         double y1 = o.y + uy * recorte;
         double x2 = d.x - ux * recorte;
         double y2 = d.y - uy * recorte;
-<<<<<<< HEAD
-        boolean doble = grafo.isDirigido() && grafo.hayArista(arista.getDestino(), arista.getOrigen());
-        if (doble) {
-            double separacion = 0.18 * distancia;
-=======
         // Si existe la arista contraria (A->B y B->A en un grafo dirigido), en
         // vez de una linea recta se dibuja una CURVA desplazada lateralmente,
         // para que las dos flechas no se solapen.
@@ -296,7 +259,6 @@ public class GrafoPanel extends JPanel {
             double separacion = 0.18 * distancia;
             // El punto de control se aleja de la recta en la direccion
             // perpendicular (-uy, ux) para "abrir" la curva hacia un lado.
->>>>>>> Mariano
             double cx = (x1 + x2) / 2 - uy * separacion;
             double cy = (y1 + y2) / 2 + ux * separacion;
             g2.draw(new QuadCurve2D.Double(x1, y1, cx, cy, x2, y2));
@@ -332,34 +294,23 @@ public class GrafoPanel extends JPanel {
     }
 
     /** Punta de flecha rellena en (x, y) mirando hacia la direccion dada. */
-    /** Punta de flecha rellena en (x, y) mirando hacia la direccion dada. */
     private void pintarFlecha(Graphics2D g2, double puntaX, double puntaY, double dirX, double dirY) {
-<<<<<<< HEAD
-=======
         // Se calcula el angulo de la direccion con atan2 y a partir de el se
         // construye un triangulo: la punta apunta hacia (dirX, dirY) y la base
         // se aleja "largo" pixels atras, con un semiancho "mitad".
->>>>>>> Mariano
         double angulo = Math.atan2(dirY, dirX);
         double largo = 11;
         double mitad = 4.5;
         double baseX = puntaX - largo * Math.cos(angulo);
         double baseY = puntaY - largo * Math.sin(angulo);
-<<<<<<< HEAD
-=======
         // Los dos vertices laterales de la base se desplazan en la perpendicular
         // (+seno, -coseno) y (-seno, +coseno) del angulo de la direccion.
->>>>>>> Mariano
         Path2D flecha = new Path2D.Double();
         flecha.moveTo(puntaX, puntaY);
         flecha.lineTo(baseX + mitad * Math.sin(angulo), baseY - mitad * Math.cos(angulo));
         flecha.lineTo(baseX - mitad * Math.sin(angulo), baseY + mitad * Math.cos(angulo));
         flecha.closePath();
-<<<<<<< HEAD
-        g2.fill(flecha);
-=======
         g2.fill(flecha); // se rellena el triangulo para que se vea solido
->>>>>>> Mariano
     }
 
     /** Peso de la arista dentro de una pastilla blanca para que se lea. */
