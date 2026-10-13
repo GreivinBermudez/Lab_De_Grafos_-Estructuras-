@@ -100,6 +100,8 @@ public class PanelOpcion2 extends JPanel {
 
     /** Aplica el tipo de grafo (dirigido/no dirigido) seleccionado en la casilla. */
     private void aplicarTipoGrafo() {
+        // Simplemente cambia la bandera del grafo; el propio Grafo se encarga
+        // de notificar a los oyentes y de simetrizar la matriz si hace falta.
         panelEditor.getGrafo().setDirigido(chkDirigido.isSelected());
     }
 
@@ -153,10 +155,13 @@ public class PanelOpcion2 extends JPanel {
     private void adoptarGrafo(Grafo nuevo) {
         Grafo anterior = panelEditor.getGrafo();
         if (anterior != null) {
+            // Se deja de escuchar al grafo viejo para no acumular oyentes
+            // huérfanos (sino, al pegar varias veces se dispararía el refresco
+            // varias veces por cada cambio).
             anterior.removeListener(oyenteMatriz);
         }
         panelEditor.setGrafo(nuevo); // el editor reengancha su propio listener
-        nuevo.addListener(oyenteMatriz);
+        nuevo.addListener(oyenteMatriz); // y aquí se conecta la matriz al nuevo
         refrescarMatriz();
     }
 

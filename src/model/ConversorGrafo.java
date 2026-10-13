@@ -22,12 +22,16 @@ public final class ConversorGrafo {
      * @throws MatrizInvalidaException si la matriz no cumple las reglas
      */
     public static Grafo desdeMatriz(int[][] m, boolean dirigido) throws MatrizInvalidaException {
-        validar(m, dirigido);
+        validar(m, dirigido); // lanza MatrizInvalidaException si algo no cuadra
         Grafo g = new Grafo(dirigido);
         int n = m.length;
+        // Primero se crean todos los vertices (A, B, C...) para que la matriz
+        // del grafo tenga ya el tamano correcto...
         for (int i = 0; i < n; i++) {
             g.agregarVertice(Grafo.etiquetaPorDefecto(i));
         }
+        // ...y despues se cargan las aristas. Solo las celdas distintas de 0
+        // representan arista, el resto ya estan en cero por defecto.
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (m[i][j] != 0) {
@@ -84,6 +88,8 @@ public final class ConversorGrafo {
             }
         }
         if (!dirigido) {
+            // Solo se recorre la mitad superior (j > i) porque la matriz
+            // simetrica repite la misma arista en las dos posiciones.
             for (int i = 0; i < n; i++) {
                 for (int j = i + 1; j < n; j++) {
                     if (m[i][j] != m[j][i]) {
@@ -160,10 +166,13 @@ public final class ConversorGrafo {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (dirigido) {
+                    // Cada celda se decide sola (puede haber arista en un solo sentido).
                     if (rnd.nextDouble() < probabilidad) {
                         m[i][j] = 1;
                     }
                 } else if (j >= i && rnd.nextDouble() < probabilidad) {
+                    // No dirigido: solo se decide la mitad superior (j >= i) y
+                    // la celda espejo se rellena a la vez para guardar la simetria.
                     m[i][j] = 1;
                     m[j][i] = 1;
                 }
@@ -204,9 +213,12 @@ public final class ConversorGrafo {
         if (texto == null || texto.trim().isEmpty()) {
             return new int[0][0];
         }
-        String[] lineas = texto.trim().split("\\R");
+        String[] lineas = texto.trim().split("\\R"); // \R salta cualquier salto de linea
         int[][] m = new int[lineas.length][];
         for (int i = 0; i < lineas.length; i++) {
+            // Separa las celdas aunque esten con espacios, comas, puntos y
+            // coma o tabuladores; asi se acepta el texto de casi cualquier
+            // fuente (hoja de calculo, editor de texto, etc.).
             String[] celdas = lineas[i].trim().split("[\\s,;]+");
             m[i] = new int[celdas.length];
             for (int j = 0; j < celdas.length; j++) {
